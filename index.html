@@ -4,12 +4,15 @@
   <meta charset="UTF-8">
   <title>RED RAID</title>
 
+  <!-- КОД ДЛЯ КАСТОМНОЙ ИКОНКИ ВКЛАДКИ (FAVICON) -->
+  <link rel="icon" type="image/png" href="./public/red_raid-removebg-preview.png">
+
   <!-- КОД ДЛЯ ПРЕВЬЮ В DISCORD -->
   <meta property="og:title" content="RED RAID — PLAYER KILLER сообщество">
-  <meta property="og:description" content="Мир игры забит рабами шаблонов. Мы выбрали абсолютную свободу и волю. Ты с нами или на дне?">
+  <meta property="og:description" content="Мир игры забит рабами шаблонов. Мы выбрали absolute свободу и волю. Ты с нами или на дне?">
   <meta property="og:type" content="website">
-  
-  <!-- Кнопка "входа" в CSS: открываем тег style внутри head -->
+
+  <!-- Стили сайта -->
   <style>
     body {
       background-color: #121212; /* Наш темный фон */
@@ -46,21 +49,42 @@
       padding: 30px 0;
     }
 
-    /* ПУЛЬСИРУЮЩЕЕ КРАСНОЕ СВЕЧЕНИЕ ДЛЯ ЛОГОТИПА */
+    /* ПУЛЬСИРУЮЩЕЕ КРАСНОЕ СВЕЧЕНИЕ И УДАЛЕНИЕ БЕЛОЙ БАХРОМЫ */
     header img {
       width: 320px;      /* Поставили аккуратный размер */
       height: auto;
       margin-bottom: 15px;
 
-      /* ЗАФИКСИРОВАНО: Медленная зловещая пульсация 6 секунд */
+      /* ЗАФИКСИРОВАНО: Медленная зловещая пульсация 6 секунд + выжигание краев */
       animation: neonPulse 6s infinite ease-in-out;
     }
 
-    /* Настройка плавного «дыхания» тьмы */
+    /* Исправленная анимация: контраст 150% + четырехсторонний черный барьер, который полностью съедает белые точки */
     @keyframes neonPulse {
-      0% { filter: drop-shadow(0 0 15px rgba(255, 51, 51, 0.5)); }
-      50% { filter: drop-shadow(0 0 40px rgba(255, 51, 51, 0.95)); }
-      100% { filter: drop-shadow(0 0 15px rgba(255, 51, 51, 0.5)); }
+      0% {
+        filter: contrast(150%) brightness(90%)
+        drop-shadow(1px 1px 1px #000)
+        drop-shadow(-1px -1px 1px #000)
+        drop-shadow(1px -1px 1px #000)
+        drop-shadow(-1px 1px 1px #000)
+        drop-shadow(0 0 15px rgba(255, 51, 51, 0.4));
+      }
+      50% {
+        filter: contrast(150%) brightness(90%)
+        drop-shadow(1px 1px 1px #000)
+        drop-shadow(-1px -1px 1px #000)
+        drop-shadow(1px -1px 1px #000)
+        drop-shadow(-1px 1px 1px #000)
+        drop-shadow(0 0 40px rgba(255, 51, 51, 0.95));
+      }
+      100% {
+        filter: contrast(150%) brightness(90%)
+        drop-shadow(1px 1px 1px #000)
+        drop-shadow(-1px -1px 1px #000)
+        drop-shadow(1px -1px 1px #000)
+        drop-shadow(-1px 1px 1px #000)
+        drop-shadow(0 0 15px rgba(255, 51, 51, 0.4));
+      }
     }
 
     h1 {
@@ -118,7 +142,7 @@
       z-index: -2;
       opacity: 0.25;
     }
-  </style> <!-- Закрыть CSS-код -->
+  </style>
 
 </head>
 <body>
