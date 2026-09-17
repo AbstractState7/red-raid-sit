@@ -12,7 +12,7 @@
   <meta property="og:description" content="Мир игры забит рабами шаблонов. Мы выбрали absolute свободу и волю. Ты с нами или на дне?">
   <meta property="og:type" content="website">
 
-  <!-- Стили сайта -->
+  <!-- Стили сайта (Тот самый CSS, который сидит в голове сайта) -->
   <style>
     body {
       background-color: #121212; /* Наш темный фон */
@@ -59,7 +59,7 @@
       animation: neonPulse 6s infinite ease-in-out;
     }
 
-    /* Исправленная анимация: контраст 150% + четырехсторонний черный барьер, который полностью съедает белые точки */
+    /* Контраст 150% + четырехсторонний черный барьер, который полностью съедает белые точки */
     @keyframes neonPulse {
       0% {
         filter: contrast(150%) brightness(90%)
@@ -130,6 +130,8 @@
       font-size: 22px;
       border-bottom: 1px solid rgba(255, 51, 51, 0.3);
       padding-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     .bg-video {
@@ -141,6 +143,111 @@
       object-fit: cover;
       z-index: -2;
       opacity: 0.25;
+    }
+
+    /* СТИЛИ ДЛЯ ГАЛЕРЕИ ТРОФЕЕВ */
+    .screenshot-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .screenshot-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 51, 51, 0.2);
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+      aspect-ratio: 16 / 9;
+    }
+
+    .screenshot-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+      filter: grayscale(50%) brightness(70%);
+    }
+
+    .screenshot-item:hover {
+      transform: scale(1.05) translateY(-3px);
+      border-color: #ff3333;
+      box-shadow: 0 0 15px rgba(255, 51, 51, 0.5);
+      z-index: 5;
+    }
+
+    .screenshot-item:hover img {
+      transform: scale(1.1);
+      filter: grayscale(0%) brightness(100%);
+    }
+
+    /* СТИЛИ ДЛЯ СПИСКА РОЗЫСКА (BOUNTY) */
+    .bounty-list {
+      list-style: none;
+      padding: 0;
+      margin: 15px 0 0 0;
+    }
+
+    .bounty-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px dashed rgba(255, 51, 51, 0.15);
+      font-size: 16px;
+    }
+
+    .bounty-item:last-child {
+      border-bottom: none;
+    }
+
+    .bounty-name {
+      color: #e0e0e0;
+      font-family: monospace;
+      font-size: 18px;
+    }
+
+    .bounty-reward {
+      color: #ff3333;
+      font-size: 14px;
+      background: rgba(255, 51, 51, 0.1);
+      padding: 3px 8px;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 51, 51, 0.2);
+    }
+
+    /* КНОПКА ДИСКОРДА В СТИЛЕ КЛАНА */
+    .discord-btn {
+      display: block;
+      text-align: center;
+      background: linear-gradient(135deg, #cc0000 0%, #880000 100%);
+      color: #ffffff;
+      text-decoration: none;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: bold;
+      border: 1px solid #ff3333;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+      transition: all 0.3s ease;
+      margin-top: 10px;
+      animation: btnPulse 3s infinite ease-in-out;
+    }
+
+    .discord-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 25px rgba(255, 51, 51, 0.8);
+      letter-spacing: 3px;
+    }
+
+    @keyframes btnPulse {
+      0% { box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4); }
+      50% { box-shadow: 0 0 20px rgba(255, 51, 51, 0.6); }
+      100% { box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4); }
     }
   </style>
 
@@ -159,9 +266,10 @@
 
 <main>
 
+  <!-- СЕКЦИЯ 1: О НАС -->
   <section>
     <h2>О нас</h2>
-    <p style="font-size: 16px; font-weight: normal; color: #b0b0b0; line-height: 1.6;">
+    <p style="font-size: 16px; font-weight: normal; color: #b0b0b0; line-height: 1.6; margin: 0;">
       Мир игры забит рабами шаблонов.
       Они живут в вечной суете и боятся сделать шаг в сторону.
       Но когда они сталкиваются с <span style="color: #ff3333; font-weight: bold; text-shadow: 0 0 8px rgba(255,51,51,0.3);">RED RAID</span>, вся их мнимая правильность смывается в унитаз,
@@ -172,6 +280,44 @@
       Ты с нами или среди голосов на дне?
     </p>
   </section>
+
+  <!-- СЕКЦИЯ 2: ГАЛЕРЕЯ ТРОФЕЕВ -->
+  <section>
+    <h2>Галерея трофеев</h2>
+    <div class="screenshot-grid">
+      <div class="screenshot-item">
+        <img src="./public/Red Raid 1.png" alt="Трофей 1" onerror="this.src='https://placehold.co'">
+      </div>
+      <div class="screenshot-item">
+        <img src="./public/Red Raid 10.png" alt="Трофей 2" onerror="this.src='https://placehold.co'">
+      </div>
+      <div class="screenshot-item">
+        <img src="./public/Red Raid 11.png" alt="Трофей 3" onerror="this.src='https://placehold.co'">
+      </div>
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ 3: СПИСОК РОЗЫСКА (BOUNTY) -->
+  <section>
+    <h2>В розыске (Bounty List)</h2>
+    <ul class="bounty-list">
+      <li class="bounty-item">
+        <span class="bounty-name">MishaNaRotan</span>
+        <span class="bounty-reward">Награда: Слёзы в ПМ</span>
+      </li>
+      <li class="bounty-item">
+        <span class="bounty-name">Akame</span>
+        <span class="bounty-reward">Награда: Дроп на землю</span>
+      </li>
+      <li class="bounty-item">
+        <span class="bounty-name">Кости Дарка</span>
+        <span class="bounty-reward">Награда: Смыв в унитаз</span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- КНОПКА ВСТУПЛЕНИЯ -->
+  <a href="https://discord.gg/CucRCjUZhJ" target="_blank" class="discord-btn">Вступить в Discord</a>
 
 </main>
 
@@ -193,43 +339,5 @@
   for (let i = 0; i < maxDrops; i++) {
     drops.push({
       x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      length: Math.random() * 15 + 10,
-      speed: Math.random() * 4 + 3
-    });
-  }
-
-  function drawRain() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Темно-красный цвет для капель крови с полупрозрачностью
-    ctx.strokeStyle = 'rgba(204, 0, 0, 0.35)';
-    ctx.lineWidth = 1.5;
-    ctx.lineCap = 'round';
-
-    for (let i = 0; i < maxDrops; i++) {
-      const d = drops[i];
-      ctx.beginPath();
-      ctx.moveTo(d.x, d.y);
-      ctx.lineTo(d.x, d.y + d.length);
-      ctx.stroke();
-
-      d.y += d.speed;
-
-      if (d.y > canvas.height) {
-        d.y = -d.length;
-        d.x = Math.random() * canvas.width;
-        d.speed = Math.random() * 4 + 3;
-      }
-    }
-    requestAnimationFrame(drawRain);
-  }
-
-  drawRain();
-</script>
-
-<script type="module" src="/src/main.js"></script>
-</body>
-</html>
 
 
