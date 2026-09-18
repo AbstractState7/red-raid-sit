@@ -11,7 +11,7 @@
 
   <!-- КОД ДЛЯ ПРЕВЬЮ В DISCORD -->
   <meta property="og:title" content="RED RAID — PLAYER KILLER сообщество">
-  <meta property="og:description" content="Мир игры забит рабами шаблонов. Мы выбрали absolute свободу и волю. Ты с нами или на дне?">
+  <meta property="og:description" content="Мир игры забит рабами шаблонов. Мы выбрали абсолютную свободу и волю. Ты с нами или на дне?">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://raw.githubusercontent.com/AbstractState7/red-raid-sit/refs/heads/main/Red%20Raid%201.png">
   <meta name="twitter:card" content="summary_large_image">
@@ -32,6 +32,38 @@
       box-sizing: border-box;
       position: relative;
     }
+
+    .screenshot-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 6px;
+      border: 2px solid #222 !important; /* Темная рамка в покое */
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      aspect-ratio: 16 / 9;
+    }
+
+    .screenshot-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+      filter: grayscale(40%) brightness(75%) contrast(110%) !important; /* Мрачный игровой контраст */
+    }
+
+    /* АГРЕССИВНЫЙ НЕОН ТОЛЬКО ПРИ НАВЕДЕНИИ НА КАРТИНКУ */
+    .screenshot-item:hover {
+      transform: scale(1.04) translateY(-2px);
+      border-color: #ff3333 !important; /* Вспышка красного */
+      box-shadow: 0 0 15px rgba(255, 51, 51, 0.7), inset 0 0 10px rgba(255, 51, 51, 0.5) !important;
+      z-index: 2;
+    }
+
+    .screenshot-item:hover img {
+      transform: scale(1.08);
+      filter: grayscale(0%) brightness(105%) contrast(100%) !important; /* Проявление цвета */
+    }
+
 
     /* ХОЛСТ ДЛЯ КРОВАВОГО ДОЖДЯ */
     #rainCanvas {
@@ -285,7 +317,23 @@
 
   <!-- СЕКЦИЯ 2: ГАЛЕРЕЯ ТРОФЕЕВ -->
   <section>
-    <h2>Галерея трофеев</h2>
+    <h2>Screenshots</h2>
+    <div class="screenshot-grid">
+      <div class="screenshot-item">
+        <img src="./public/PK.jpg" alt="Трофей 1" onerror="this.src='https://placehold.co'">
+      </div>
+      <div class="screenshot-item">
+        <img src="./public/RED_RAID.png" alt="Трофей 2" onerror="this.src='https://placehold.co'">
+      </div>
+      <div class="screenshot-item">
+        <img src="./public/pk_2.png" alt="Трофей 3" onerror="this.src='https://placehold.co'">
+      </div>
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ 3:  -->
+  <section>
+    <h2></h2>
     <div class="screenshot-grid">
       <div class="screenshot-item">
         <img src="./public/RedRaid1.png" alt="Трофей 1" onerror="this.src='https://placehold.co'">
@@ -299,7 +347,7 @@
     </div>
   </section>
 
-  <!-- СЕКЦИЯ 3: СПИСОК РОЗЫСКА (BOUNTY) -->
+  <!-- СЕКЦИЯ 4: СПИСОК РОЗЫСКА (BOUNTY) -->
   <section>
     <h2>В розыске (Bounty List)</h2>
     <ul class="bounty-list">
