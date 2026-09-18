@@ -32,6 +32,36 @@
       box-sizing: border-box;
       position: relative;
     }
+    /* СТИЛИ ДЛЯ МОДАЛЬНОГО ОКНА ПРОСМОТРА КАРТИНКИ */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9); /* Глухой черный полупрозрачный фон */
+      display: none; /* Изначально скрыто */
+      justify-content: center;
+      align-items: center;
+      z-index: 9999; /* Поверх дождя, видео и всего сайта */
+      cursor: zoom-out; /* При наведении мышка показывает, что можно закрыть */
+      backdrop-filter: blur(8px); /* Размытие сайта на заднем плане */
+    }
+
+    .modal-overlay img {
+      max-width: 90%;
+      max-height: 90%;
+      border: 2px solid #ff3333; /* Наша фирменная красная рамка */
+      box-shadow: 0 0 30px rgba(255, 51, 51, 0.5);
+      border-radius: 8px;
+      animation: zoomIn 0.25s ease-out; /* Плавное появление из центра */
+    }
+
+    @keyframes zoomIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
 
     .screenshot-item {
       position: relative;
@@ -346,7 +376,7 @@
       </div>
     </div>
   </section>
-  
+
   <!-- КНОПКА ВСТУПЛЕНИЯ -->
   <a href="https://discord.gg/CucRCjUZhJ" target="_blank" class="discord-btn">Вступить в Discord</a>
 </main>
@@ -401,7 +431,26 @@
       requestAnimationFrame(drawRain);
     }
     drawRain();
+    // ЛОГИКА ОТКРЫТИЯ КАРТИНОК ПО КЛИКУ
+    const modal = document.getElementById('imageModal');
+    const modalImg = modal.querySelector('img');
+    const items = document.querySelectorAll('.screenshot-grid .screenshot-item img');
+
+    // Клик по любой картинке в галерее
+    items.forEach(img => {
+      img.parentElement.addEventListener('click', () => {
+        modal.style.display = 'flex';
+        modalImg.src = img.src; // Перекидываем путь картинки в модалку
+      });
+    });
+
+    // Клик в любое место черного экрана закрывает его обратно
+    modal.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
   });
 </script>
+<!-- Контейнер для полноэкранного просмотра -->
+<div id="imageModal" class="modal-overlay"><img></div>
 </body>
 </html>
