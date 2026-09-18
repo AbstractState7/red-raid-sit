@@ -2,8 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport">
-  <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>RED RAID</title>
 
@@ -15,7 +14,7 @@
   <meta property="og:description" content="Мир игры забит рабами шаблонов. Мы выбрали absolute свободу и волю. Ты с нами или на дне?">
   <meta property="og:type" content="website">
 
-  <!-- Стили сайта (Тот самый CSS, который сидит в голове сайта) -->
+  <!-- Стили сайта (CSS) -->
   <style>
     body {
       background-color: #121212; /* Наш темный фон */
@@ -253,7 +252,6 @@
       100% { box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4); }
     }
   </style>
-
 </head>
 <body>
 <video src="./public/UntitledPK.mp4" autoplay loop muted playsinline class="bg-video"></video>
@@ -268,7 +266,6 @@
 </header>
 
 <main>
-
   <!-- СЕКЦИЯ 1: О НАС -->
   <section>
     <h2>О нас</h2>
@@ -320,27 +317,60 @@
   </section>
 
   <!-- КНОПКА ВСТУПЛЕНИЯ -->
-  <a href="https://discord.gg/CucRCjUZhJ" target="_blank" class="discord-btn">Вступить в Discord</a>
-
+  <a href="https://discord.gg" target="_blank" class="discord-btn">Вступить в Discord</a>
 </main>
 
 <!-- СКРИПТ ДЛЯ КРОВАВОГО ДОЖДЯ -->
 <script>
-  const canvas = document.getElementById('rainCanvas');
-  const ctx = canvas.getContext('2d');
+  window.addEventListener('DOMContentLoaded', () => {
+    const canvas = document.getElementById('rainCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
 
-  function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  resizeCanvas();
-  window.addEventListener('resize', resizeCanvas);
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
 
-  const maxDrops = 60; // Количество капель крови на экране
-  const drops = [];
+    const maxDrops = 60;
+    const drops = [];
 
-  for (let i = 0; i < maxDrops; i++) {
-    drops.push({
-      x: Math.random() * canvas.width,
+    for (let i = 0; i < maxDrops; i++) {
+      drops.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        length: Math.random() * 15 + 10,
+        speed: Math.random() * 4 + 3
+      });
+    }
 
+    function drawRain() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.strokeStyle = 'rgba(204, 0, 0, 0.45)';
+      ctx.lineWidth = 1.8;
+      ctx.lineCap = 'round';
 
+      for (let i = 0; i < maxDrops; i++) {
+        const d = drops[i];
+        ctx.beginPath();
+        ctx.moveTo(d.x, d.y);
+        ctx.lineTo(d.x, d.y + d.length);
+        ctx.stroke();
+
+        d.y += d.speed;
+
+        if (d.y > canvas.height) {
+          d.y = -d.length;
+          d.x = Math.random() * canvas.width;
+          d.speed = Math.random() * 4 + 3;
+        }
+      }
+      requestAnimationFrame(drawRain);
+    }
+    drawRain();
+  });
+</script>
+</body>
+</html>
