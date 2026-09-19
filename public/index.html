@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>RED RAID</title>
+
+  <!-- КОД ДЛЯ КАСТОМНОЙ ИКОНКИ ВКЛАДКИ (FAVICON) -->
+  <link rel="icon" type="image/png" href="./public/red_raid-removebg-preview.png">
+
+  <!-- КОД ДЛЯ ПРЕВЬЮ В DISCORD -->
+  <meta property="og:title" content="RED RAID — PLAYER KILLER сообщество">
+  <meta property="og:description" content="Мир игры забит рабами шаблонов. Мы выбрали абсолютную свободу и волю. Ты с нами или на дне?">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://abstractstate7.github.io/red-raid-sit/public/RED_RAID.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Стили сайта (CSS) -->
+  <style>
+    body {
+      background-color: #121212; /* Наш темный фон */
+      color: #e0e0e0;
+      font-weight: bold;
+      font-size: 20px;
+      font-family: sans-serif;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      box-sizing: border-box;
+      position: relative;
+    }
+    /* СТИЛИ ДЛЯ МОДАЛЬНОГО ОКНА ПРОСМОТРА КАРТИНКИ */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9); /* Глухой черный полупрозрачный фон */
+      display: none; /* Изначально скрыто */
+      justify-content: center;
+      align-items: center;
+      z-index: 9999; /* Поверх дождя, видео и всего сайта */
+      cursor: zoom-out; /* При наведении мышка показывает, что можно закрыть */
+      backdrop-filter: blur(8px); /* Размытие сайта на заднем плане */
+    }
+
+    .modal-overlay img {
+      max-width: 90%;
+      max-height: 90%;
+      border: 2px solid #ff3333; /* Наша фирменная красная рамка */
+      box-shadow: 0 0 30px rgba(255, 51, 51, 0.5);
+      border-radius: 8px;
+      animation: zoomIn 0.25s ease-out; /* Плавное появление из центра */
+    }
+
+    @keyframes zoomIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+
+    .screenshot-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 6px;
+      border: 2px solid #222 !important; /* Темная рамка в покое */
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      aspect-ratio: 16 / 9;
+    }
+
+    .screenshot-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+      filter: grayscale(40%) brightness(75%) contrast(110%) !important; /* Мрачный игровой контраст */
+    }
+
+    /* АГРЕССИВНЫЙ НЕОН ТОЛЬКО ПРИ НАВЕДЕНИИ НА КАРТИНКУ */
+    .screenshot-item:hover {
+      transform: scale(1.04) translateY(-2px);
+      border-color: #ff3333 !important; /* Вспышка красного */
+      box-shadow: 0 0 15px rgba(255, 51, 51, 0.7), inset 0 0 10px rgba(255, 51, 51, 0.5) !important;
+      z-index: 2;
+    }
+
+    .screenshot-item:hover img {
+      transform: scale(1.08);
+      filter: grayscale(0%) brightness(105%) contrast(100%) !important; /* Проявление цвета */
+    }
+
+
+    /* ХОЛСТ ДЛЯ КРОВАВОГО ДОЖДЯ */
+    #rainCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1; /* Сидит строго ПЕРЕД видео, но ЗА текстом */
+      pointer-events: none; /* Мышка кликает сквозь дождь */
+    }
+
+    /* Правило для шляпы: центрируем всё содержимое */
+    header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 0;
+    }
+
+    /* ПУЛЬСИРУЮЩЕЕ КРАСНОЕ СВЕЧЕНИЕ И УДАЛЕНИЕ БЕЛОЙ БАХРОМЫ */
+    header img {
+      width: 320px;      /* Поставили аккуратный размер */
+      height: auto;
+      margin-bottom: 15px;
+
+      /* ЗАФИКСИРОВАНО: Медленная зловещая пульсация 6 секунд + выжигание краев */
+      animation: neonPulse 6s infinite ease-in-out;
+    }
+
+    /* Контраст 150% + четырехсторонний черный барьер, который полностью съедает белые точки */
+    @keyframes neonPulse {
+      0% {
+        filter: contrast(150%) brightness(90%)
+        drop-shadow(1px 1px 1px #000)
+        drop-shadow(-1px -1px 1px #000)
+        drop-shadow(1px -1px 1px #000)
+        drop-shadow(-1px 1px 1px #000)
+        drop-shadow(0 0 15px rgba(255, 51, 51, 0.4));
+      }
+      50% {
+        filter: contrast(150%) brightness(90%)
+        drop-shadow(1px 1px 1px #000)
+        drop-shadow(-1px -1px 1px #000)
+        drop-shadow(1px -1px 1px #000)
+        drop-shadow(-1px 1px 1px #000)
+        drop-shadow(0 0 40px rgba(255, 51, 51, 0.95));
+      }
+      100% {
+        filter: contrast(150%) brightness(90%)
+        drop-shadow(1px 1px 1px #000)
+        drop-shadow(-1px -1px 1px #000)
+        drop-shadow(1px -1px 1px #000)
+        drop-shadow(-1px 1px 1px #000)
+        drop-shadow(0 0 15px rgba(255, 51, 51, 0.4));
+      }
+    }
+
+    h1 {
+      color: #ff3333;
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 0 0 10px rgba(255, 51, 51, 0.5); /* Небольшой отсвет для текста */
+    }
+
+    header p {
+      margin: 10px 0 0 0;
+      font-size: 18px;
+      color: #a0a0a0;
+    }
+
+    header b {
+      color: #ff3333;
+    }
+
+    /* Полупрозрачный контейнер для разделов сайта */
+    main {
+      flex-grow: 1;
+      max-width: 600px;
+      width: 100%;
+      margin: 20px auto;
+    }
+
+    /* Стиль для карточек-разделов */
+    section {
+      background: rgba(22, 22, 26, 0.85); /* Чуть плотнее, чтобы дождь не мешал читать */
+      backdrop-filter: blur(5px); /* Размытие видео позади карточки */
+      border: 1px solid rgba(255, 51, 51, 0.15); /* Едва заметная красная рамка */
+      padding: 25px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    section h2 {
+      color: #ff3333;
+      margin-top: 0;
+      font-size: 22px;
+      border-bottom: 1px solid rgba(255, 51, 51, 0.3);
+      padding-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -2;
+      opacity: 0.25;
+    }
+
+    /* СТИЛИ ДЛЯ ГАЛЕРЕИ ТРОФЕЕВ */
+    .screenshot-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .screenshot-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 51, 51, 0.2);
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+      aspect-ratio: 16 / 9;
+    }
+
+    .screenshot-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+      filter: grayscale(50%) brightness(70%);
+    }
+
+    .screenshot-item:hover {
+      transform: scale(1.05) translateY(-3px);
+      border-color: #ff3333;
+      box-shadow: 0 0 15px rgba(255, 51, 51, 0.5);
+      z-index: 5;
+    }
+
+    .screenshot-item:hover img {
+      transform: scale(1.1);
+      filter: grayscale(0%) brightness(100%);
+    }
+
+    /* СТИЛИ ДЛЯ СПИСКА РОЗЫСКА (BOUNTY) */
+    .bounty-list {
+      list-style: none;
+      padding: 0;
+      margin: 15px 0 0 0;
+    }
+
+    .bounty-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px dashed rgba(255, 51, 51, 0.15);
+      font-size: 16px;
+    }
+
+    .bounty-item:last-child {
+      border-bottom: none;
+    }
+
+    .bounty-name {
+      color: #e0e0e0;
+      font-family: monospace;
+      font-size: 18px;
+    }
+
+    .bounty-reward {
+      color: #ff3333;
+      font-size: 14px;
+      background: rgba(255, 51, 51, 0.1);
+      padding: 3px 8px;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 51, 51, 0.2);
+    }
+
+    /* КНОПКА ДИСКОРДА В СТИЛЕ КЛАНА */
+    .discord-btn {
+      display: block;
+      text-align: center;
+      background: linear-gradient(135deg, #cc0000 0%, #880000 100%);
+      color: #ffffff;
+      text-decoration: none;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: bold;
+      border: 1px solid #ff3333;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+      transition: all 0.3s ease;
+      margin-top: 10px;
+      animation: btnPulse 3s infinite ease-in-out;
+    }
+
+    .discord-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 25px rgba(255, 51, 51, 0.8);
+      letter-spacing: 3px;
+    }
+
+    @keyframes btnPulse {
+      0% { box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4); }
+      50% { box-shadow: 0 0 20px rgba(255, 51, 51, 0.6); }
+      100% { box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4); }
+    }
+  </style>
+</head>
+<body>
+<video src="./public/UntitledPK.mp4" autoplay loop muted playsinline class="bg-video"></video>
+
+<!-- Холст для капель дождя -->
+<canvas id="rainCanvas"></canvas>
+
+<header>
+  <img src="./public/red_raid-removebg-preview.png" alt="Логотип RED RAID">
+  <h1>PLAYER KILLER сообщество</h1>
+  <p>СВОБОДА <b>«АБСТРАКЦИЯ»</b> Романтика</p>
+</header>
+
+<main>
+  <!-- СЕКЦИЯ 1: О НАС -->
+  <section>
+    <h2>О нас</h2>
+    <p style="font-size: 16px; font-weight: normal; color: #b0b0b0; line-height: 1.6; margin: 0;">
+      Мир игры забит рабами шаблонов.
+      Они живут в вечной суете и боятся сделать шаг в сторону.
+      Но когда они сталкиваются с <span style="color: #ff3333; font-weight: bold; text-shadow: 0 0 8px rgba(255,51,51,0.3);">RED RAID</span>, вся их мнимая правильность теряет иллюзию,
+      оставляя лишь жалкий мат в ПМ.
+      Для нас <span style="color: #ff3333; font-weight: bold; text-shadow: 0 0 8px rgba(255,51,51,0.3);">PK</span> — это не агрессия.
+      Это манифест свободы и воли.
+      Мы доказали, что можно выйти из стада и управлять своей игрой по праву сильного.
+      Шилен не спросит, в каком ты шмоте и какого лвла, с собой ты их не заберешь.
+    </p>
+  </section>
+
+  <!-- СЕКЦИЯ 2: ГАЛЕРЕЯ ТРОФЕЕВ -->
+  <section>
+    <h2>Red Moments</h2>
+    <div class="screenshot-grid">
+      <div class="screenshot-item">
+        <img src="./public/PK.jpg" alt="Трофей 1" onerror="this.src='https://placehold.co'">
+      </div>
+      <div class="screenshot-item">
+        <img src="./public/RED_RAID.png" alt="Трофей 2" onerror="this.src='https://placehold.co'">
+      </div>
+      <div class="screenshot-item">
+        <img src="./public/PK3.png" alt="Трофей 3" onerror="this.src='https://placehold.co'">
+      </div>
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ 3: ГАЛЕРЕЯ ТРОФЕЕВ -->
+  <section>
+    <h2></h2>
+    <div class="screenshot-grid">
+      <div class="screenshot-item">
+        <img src="./public/PK.jpg" alt="Трофей 1" onerror="this.src='https://placehold.co'">
+      </div>
+      <div class="screenshot-item">
+        <img src="./public/RED_RAID.png" alt="Трофей 2" onerror="this.src='https://placehold.co'">
+      </div>
+      <div class="screenshot-item">
+        <img src="./public/pk_2.png" alt="Трофей 3" onerror="this.src='https://placehold.co'">
+      </div>
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ 4:  -->
+  <section>
+    <h2></h2>
+    <div class="screenshot-grid">
+      <div class="screenshot-item">
+        <img src="./public/RedRaid1.png" alt="Трофей 1" onerror="this.src='https://placehold.co'">
+      </div>
+      <div class="screenshot-item">
+        <img src="./public/RedRaid10.png" alt="Трофей 2" onerror="this.src='https://placehold.co'">
+      </div>
+      <div class="screenshot-item">
+        <img src="./public/RedRaid11.png" alt="Трофей 3" onerror="this.src='https://placehold.co'">
+      </div>
+    </div>
+  </section>
+
+  <!-- КНОПКА ВСТУПЛЕНИЯ -->
+  <a href="https://discord.gg/CucRCjUZhJ" target="_blank" class="discord-btn">Вступить в Discord</a>
+</main>
+
+<!-- СКРИПТ ДЛЯ КРОВАВОГО ДОЖДЯ -->
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const canvas = document.getElementById('rainCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const maxDrops = 60;
+    const drops = [];
+
+    for (let i = 0; i < maxDrops; i++) {
+      drops.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        length: Math.random() * 15 + 10,
+        speed: Math.random() * 4 + 3
+      });
+    }
+
+    function drawRain() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.strokeStyle = 'rgba(204, 0, 0, 0.45)';
+      ctx.lineWidth = 1.8;
+      ctx.lineCap = 'round';
+
+      for (let i = 0; i < maxDrops; i++) {
+        const d = drops[i];
+        ctx.beginPath();
+        ctx.moveTo(d.x, d.y);
+        ctx.lineTo(d.x, d.y + d.length);
+        ctx.stroke();
+
+        d.y += d.speed;
+
+        if (d.y > canvas.height) {
+          d.y = -d.length;
+          d.x = Math.random() * canvas.width;
+          d.speed = Math.random() * 4 + 3;
+        }
+      }
+      requestAnimationFrame(drawRain);
+    }
+    drawRain();
+    // ЛОГИКА ОТКРЫТИЯ КАРТИНОК ПО КЛИКУ
+    const modal = document.getElementById('imageModal');
+    const modalImg = modal.querySelector('img');
+    const items = document.querySelectorAll('.screenshot-grid .screenshot-item img');
+
+    // Клик по любой картинке в галерее
+    items.forEach(img => {
+      img.parentElement.addEventListener('click', () => {
+        modal.style.display = 'flex';
+        modalImg.src = img.src; // Перекидываем путь картинки в модалку
+      });
+    });
+
+    // Клик в любое место черного экрана закрывает его обратно
+    modal.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+  });
+</script>
+<!-- Контейнер для полноэкранного просмотра -->
+<div id="imageModal" class="modal-overlay"><img></div>
+</body>
+</html>
