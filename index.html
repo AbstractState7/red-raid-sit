@@ -315,6 +315,16 @@
       50% { box-shadow: 0 0 20px rgba(255, 51, 51, 0.6); }
       100% { box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4); }
     }
+    @media (max-width: 768px) {
+      /* Выбираем абсолютно все элементы на сайте и отключаем им тяжелую графику */
+      *, *::before, *::after {
+        box-shadow: none !important;        /* Убирает тени у блоков и свечение кнопок */
+        text-shadow: none !important;       /* Убирает свечение у текста */
+        filter: none !important;            /* Убирает drop-shadow у логотипа и картинок */
+        backdrop-filter: none !important;   /* Убирает матовое размытие фона */
+      }
+    }
+
   </style>
 </head>
 <body>
