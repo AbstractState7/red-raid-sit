@@ -398,7 +398,7 @@
   <a href="https://discord.gg/CucRCjUZhJ" target="_blank" class="discord-btn">Вступить в Discord</a>
 </main>
 
-<!-- СКРИПТ ДЛЯ КРОВАВОГО ДОЖДЯ -->
+<!-- СКРИПТ ДЛЯ КРОВАВОГО ДОЖДЯ, ВЕТРА И ИСКР ХАОСА -->
 <script>
   window.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('rainCanvas');
@@ -412,66 +412,111 @@
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // МАТЕМАТИКА ХАОСА (Генерация погоды на основе даты и времени)
+    // МАТЕМАТИКА ГЕНЕРАЦИИ ХАОСА НА ОСНОВЕ ВРЕМЕНИ
     const now = new Date();
-    const day = now.getDate();     // День (1-31)
-    const hour = now.getHours();   // Час (0-23)
-    const minute = now.getMinutes(); // Минута (0-59)
+    const day = now.getDate();
+    const hour = now.getHours();
+    const minute = now.getMinutes();
 
-    // Функция-генератор псевдослучайных чисел на основе хэша времени
     function seedRandom(seed) {
       const x = Math.sin(seed) * 10000;
       return x - Math.floor(x);
     }
 
-    // Создаем уникальный числовой ключ для текущей минуты, часа и дня
     const timeSeed = day * 1000 + hour * 100 + minute;
 
-    // Генерируем хаотичные, но фиксированные для этой минуты параметры погоды
-    const weatherFactor = seedRandom(timeSeed);         // Число от 0 до 1
-    const speedFactor = seedRandom(timeSeed + 1) * 3 + 1; // Множитель скорости падения (от 1 до 4)
+    // Генерируем хаотичные факторы текущей минуты
+    const weatherFactor = seedRandom(timeSeed);
+    const speedFactor = seedRandom(timeSeed + 1) * 3 + 1; // Скорость дождя
 
-    // Количество капель теперь безумно прыгает от 20 (редкий дождь) до 260 (ураган хаоса)
-    const maxDrops = Math.floor(weatherFactor * 240) + 20;
+    // ВЕТЕР: Сила ветра от -5 (влево) до +5 (вправо). 0 — штиль.
+    const windSpeed = (seedRandom(timeSeed + 2) - 0.5) * 10;
+
+    // ИСКРЫ: Решаем, сколько багровых искр взлетит в эту минуту (от 0 до 80)
+    const maxSparks = Math.floor(seedRandom(timeSeed + 3) * 80);
+
+    // ДОЖДЬ: Количество капель прыгает от 20 до 220
+    const maxDrops = Math.floor(weatherFactor * 200) + 20;
+
     const drops = [];
+    const sparks = [];
 
-    // Заполняем массив каплями с учетом сгенерированного хаоса скорости и длины
+    // Инициализация капель дождя
     for (let i = 0; i < maxDrops; i++) {
       drops.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        length: (Math.random() * 15 + 10) * (speedFactor * 0.7), // Чем быстрее шторм, тем длиннее капли
+        length: (Math.random() * 15 + 10) * (speedFactor * 0.7),
         speed: (Math.random() * 4 + 3) * speedFactor
       });
     }
 
-    function drawRain() {
+    // Инициализация багровых искр пепла
+    for (let i = 0; i < maxSparks; i++) {
+      sparks.push({
+        x: Math.random() * canvas.width,
+        y: canvas.height + Math.random() * 100, // Стартуют снизу за экраном
+        size: Math.random() * 3 + 1,            // Размер искорки
+        speedY: Math.random() * 2 + 1,          // Скорость взлета вверх
+        speedX: (Math.random() - 0.5) * 2,       // Легкое хаотичное покачивание вбок
+        alpha: Math.random() * 0.5 + 0.3        // Случайная прозрачность
+      });
+    }
+
+    function drawScene() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Делаем цвет дождя чуть прозрачнее, если капель слишком много, чтобы не слепило глаза
-      ctx.strokeStyle = maxDrops > 150 ? 'rgba(204, 0, 0, 0.25)' : 'rgba(204, 0, 0, 0.45)';
+      // --- 1. РИСУЕМ БАГРОВЫЕ ИСКРЫ (ПЕПЕЛ ВЗЛЕТАЕТ ВВЕРХ) ---
+      for (let i = 0; i < maxSparks; i++) {
+        const s = sparks[i];
+
+        ctx.fillStyle = `rgba(255, 51, 51, ${s.alpha})`;
+        ctx.beginPath();
+        // Рисуем искорку как круглую светящуюся точку
+        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Искры летят ВВЕРХ, поэтому вычитаем скорость из Y
+        s.y -= s.speedY;
+        // Ветер сдувает искры вбок, но чуть слабее, чем дождь
+        s.x += s.speedX + (windSpeed * 0.3);
+
+        // Если искра улетела за верхний край экрана — возрождаем её снизу
+        if (s.y < -10 || s.x < -10 || s.x > canvas.width + 10) {
+          s.y = canvas.height + 10;
+          s.x = Math.random() * canvas.width;
+          s.alpha = Math.random() * 0.5 + 0.3;
+        }
+      }
+
+      // --- 2. РИСУЕМ КРОВАВЫЙ ДОЖДЬ (ПАДАЕТ ВНИЗ ПОД НАКЛОНОМ ВЕТРА) ---
+      ctx.strokeStyle = maxDrops > 130 ? 'rgba(204, 0, 0, 0.25)' : 'rgba(204, 0, 0, 0.45)';
       ctx.lineWidth = 1.8;
       ctx.lineCap = 'round';
 
       for (let i = 0; i < maxDrops; i++) {
         const d = drops[i];
+
         ctx.beginPath();
         ctx.moveTo(d.x, d.y);
-        ctx.lineTo(d.x, d.y + d.length);
+        // Магия ветра: добавляем windSpeed к координате X конца капли, создавая идеальный наклон!
+        ctx.lineTo(d.x + windSpeed, d.y + d.length);
         ctx.stroke();
 
         d.y += d.speed;
+        d.x += windSpeed; // Ветер физически двигает каплю вбок при падении
 
-        if (d.y > canvas.height) {
+        // Если капля упала вниз или улетела далеко вбок из-за урагана — возвращаем наверх
+        if (d.y > canvas.height || d.x < -100 || d.x > canvas.width + 100) {
           d.y = -d.length;
           d.x = Math.random() * canvas.width;
-          // Новые капли сохраняют хаотичную скорость текущего шторма
           d.speed = (Math.random() * 4 + 3) * speedFactor;
         }
       }
-      requestAnimationFrame(drawRain);
+
+      requestAnimationFrame(drawScene);
     }
-    drawRain();
+    drawScene();
 
     // ЛОГИКА ОТКРЫТИЯ КАРТИНОК ПО КЛИКУ (Сохранена полностью)
     const modal = document.getElementById('imageModal');
