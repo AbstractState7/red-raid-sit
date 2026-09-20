@@ -357,43 +357,55 @@
   </section>
 
   <!-- Одна общая сетка для всех 9 скриншотов -->
-  <div class="screenshot-grid">
+  <!-- ХАРАКТИЧНАЯ ГАЛЕРЕЯ ТРОФЕЕВ (РУЛЕТКА ХАОСА) -->
 
-    <!-- Первый ряд -->
-    <div class="screenshot-item">
-      <img src="./public/PK.jpg" alt="Трофей 1" onerror="this.src='https://placehold.co'">
-    </div>
-    <div class="screenshot-item">
-      <img src="./public/RED_RAID.png" alt="Трофей 2" onerror="this.src='https://placehold.co'">
-    </div>
-    <div class="screenshot-item">
-      <img src="./public/PK3.png" alt="Трофей 3" onerror="this.src='https://placehold.co'">
+    <!-- Наш заголовок по центру -->
+
+    <div class="screenshot-grid" id="chaosGrid">
+      <!-- ЭТИ 9 КАРТИНОК ВСЕГДА БВИДНЫ ПРИ ОТКРЫТИИ САЙТА -->
+      <div class="screenshot-item"><img src="./public/PK.jpg" alt="Трофей 1" onerror="this.src='https://placehold.co'"></div>
+      <div class="screenshot-item"><img src="./public/RED_RAID.png" alt="Трофей 2" onerror="this.src='https://placehold.co'"></div>
+      <div class="screenshot-item"><img src="./public/PK3.png" alt="Трофей 3" onerror="this.src='https://placehold.co'"></div>
+
+      <div class="screenshot-item"><img src="./public/PK4.png" alt="Трофей 4" onerror="this.src='https://placehold.co'"></div>
+      <div class="screenshot-item"><img src="./public/PK6.png" alt="Трофей 5" onerror="this.src='https://placehold.co'"></div>
+      <div class="screenshot-item"><img src="./public/pk_2.png" alt="Трофей 6" onerror="this.src='https://placehold.co'"></div>
+
+      <div class="screenshot-item"><img src="./public/RedRaid1.png" alt="Трофей 7" onerror="this.src='https://placehold.co'"></div>
+      <div class="screenshot-item"><img src="./public/RedRaid10.png" alt="Трофей 8" onerror="this.src='https://placehold.co'"></div>
+      <div class="screenshot-item"><img src="./public/RedRaid11.png" alt="Трофей 9" onerror="this.src='https://placehold.co'"></div>
+
+      <!-- ЭТИ КАРТИНКИ ИЗНАЧАЛЬНО СКРЫТЫ. ОНИ ОЖИВУТ ТОЛЬКО ПО КЛИКУ ИЛИ ТАЙМЕРУ! -->
+      <!-- Вставлять их обязательно добавляя style="display: none;" -->
+      <div class="screenshot-item" style="display: none;"><img src="./public/PK12.png" alt="Новый трофей"></div>
+      <div class="screenshot-item" style="display: none;"><img src="./public/10.jpg" alt="Новый трофей"></div>
+      <div class="screenshot-item" style="display: none;"><img src="./public/5PK.jpg" alt="Новый трофей"></div>
+      <div class="screenshot-item" style="display: none;"><img src="./public/RedRaid12.png" alt="Новый трофей"></div>
+      <div class="screenshot-item" style="display: none;"><img src="./public/RedRaid13.png" alt="Новый трофей"></div>
+      <div class="screenshot-item" style="display: none;"><img src="./public/RedRaid14.png" alt="Новый трофей"></div>
+      <div class="screenshot-item" style="display: none;"><img src="./public/RedRaid12.png" alt="Новый трофей"></div>
+      <div class="screenshot-item" style="display: none;"><img src="./public/RedRaid13.png" alt="Новый трофей"></div>
+      <div class="screenshot-item" style="display: none;"><img src="./public/RedRaid14.png" alt="Новый трофей"></div>
+      <div class="screenshot-item" style="display: none;"><img src="./public/RedRaid12.png" alt="Новый трофей"></div>
+      <div class="screenshot-item" style="display: none;"><img src="./public/RedRaid13.png" alt="Новый трофей"></div>
+      <div class="screenshot-item" style="display: none;"><img src="./public/RedRaid14.png" alt="Новый трофей"></div>
+      <div class="screenshot-item" style="display: none;"><img src="./public/RedRaid12.png" alt="Новый трофей"></div>
+      <div class="screenshot-item" style="display: none;"><img src="./public/RedRaid13.png" alt="Новый трофей"></div>
+      <div class="screenshot-item" style="display: none;"><img src="./public/RedRaid14.png" alt="Новый трофей"></div>
+      <div class="screenshot-item" style="display: none;"><img src="./public/RedRaid12.png" alt="Новый трофей"></div>
+      <div class="screenshot-item" style="display: none;"><img src="./public/RedRaid13.png" alt="Новый трофей"></div>
+      <div class="screenshot-item" style="display: none;"><img src="./public/RedRaid14.png" alt="Новый трофей"></div>
+
     </div>
 
-    <!-- Второй ряд -->
-    <div class="screenshot-item">
-      <img src="./public/PK4.png" alt="Трофей 4" onerror="this.src='https://placehold.co'">
+    <!-- Твоя новая прокачанная кнопка -->
+    <div style="text-align: center; margin-top: 25px;">
+      <button id="shuffleBtn" class="chaos-time-btn">
+        🔺 Chronicles Of Destruction 🔺
+      </button>
     </div>
-    <div class="screenshot-item">
-      <img src="./public/PK6.png" alt="Трофей 5" onerror="this.src='https://placehold.co'">
-    </div>
-    <div class="screenshot-item">
-      <img src="./public/pk_2.png" alt="Трофей 6" onerror="this.src='https://placehold.co'">
-    </div>
-
-    <!-- Третий ряд -->
-    <div class="screenshot-item">
-      <img src="./public/RedRaid1.png" alt="Трофей 7" onerror="this.src='https://placehold.co'">
-    </div>
-    <div class="screenshot-item">
-      <img src="./public/RedRaid10.png" alt="Трофей 8" onerror="this.src='https://placehold.co'">
-    </div>
-    <div class="screenshot-item">
-      <img src="./public/RedRaid11.png" alt="Трофей 9" onerror="this.src='https://placehold.co'">
-    </div>
-
-  </div>
   </section>
+
 
   <!-- КНОПКА ВСТУПЛЕНИЯ -->
   <a href="https://discord.gg/CucRCjUZhJ" target="_blank" class="discord-btn">Вступить в Discord</a>
@@ -501,7 +513,7 @@
         }
       }
 
-      // --- 2. РИСУЕМ КРОВАВЫЙ ДОЖДЬ (ПАДАЕТ ВНИЗ ПОД НАКЛОНОМ ВЕТРА) ---
+      // --- 2. КРОВАВЫЙ ДОЖДЬ (ПАДАЕТ ВНИЗ ПОД НАКЛОНОМ ВЕТРА) ---
       ctx.strokeStyle = maxDrops > 130 ? 'rgba(204, 0, 0, 0.25)' : 'rgba(204, 0, 0, 0.45)';
       ctx.lineWidth = 1.8;
       ctx.lineCap = 'round';
@@ -546,6 +558,64 @@
       modal.addEventListener('click', () => {
         modal.style.display = 'none';
       });
+      // --- УМНАЯ АВТО-РУЛЕТКА ДЛЯ СКРЫТЫХ ФРАГМЕНТОВ ---
+      const grid = document.getElementById('chaosGrid');
+      const shuffleBtn = document.getElementById('shuffleBtn');
+
+      if (grid && shuffleBtn) {
+        const allItems = Array.from(grid.children);
+        let autoShuffleTimer = null;
+        const shuffleInterval = 18000; // Ровно 18 секунд между хаосом
+
+        function showRandomItems() {
+          // Тасуем абсолютно все картинки в случайный хаос
+          for (let i = allItems.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [allItems[i], allItems[j]] = [allItems[j], allItems[i]];
+          }
+
+          // Прячем всю базу скриншотов
+          allItems.forEach(item => {
+            item.style.display = 'none';
+            item.style.opacity = '0';
+          });
+
+          // Достаем 9 случайных и плавно выводим их на экран
+          allItems.slice(0, 9).forEach(item => {
+            item.style.display = 'block';
+            setTimeout(() => {
+              item.style.opacity = '1';
+              item.style.transition = 'opacity 0.6s ease-in-out';
+            }, 10);
+          });
+        }
+
+        function startTimer() {
+          if (!autoShuffleTimer) {
+            autoShuffleTimer = setInterval(showRandomItems, shuffleInterval);
+          }
+        }
+
+        function stopTimer() {
+          clearInterval(autoShuffleTimer);
+          autoShuffleTimer = null;
+        }
+
+        // Запускаем фоновый отсчет времени (стартовые 9 штук не трогаем!)
+        startTimer();
+
+        // Ручной взрыв хаоса по клику на кнопку Red Time Fragment
+        shuffleBtn.addEventListener('click', () => {
+          stopTimer();
+          showRandomItems();
+          startTimer();
+        });
+
+        // Заморозка при наведении мышки
+        grid.addEventListener('mouseenter', stopTimer);
+        grid.addEventListener('mouseleave', startTimer);
+      }
+
     }
   });
 </script>
