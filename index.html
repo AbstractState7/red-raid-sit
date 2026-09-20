@@ -328,7 +328,8 @@
   </style>
 </head>
 <body>
-<video src="./public/UntitledPK.mp4" autoplay loop muted playsinline class="bg-video"></video>
+<video id="bgVideo" src="./public/UntitledPK.mp4" autoplay loop muted playsinline class="bg-video"></video>
+
 
 <!-- Холст для капель дождя -->
 <canvas id="rainCanvas"></canvas>
@@ -336,7 +337,7 @@
 <header>
   <img src="./public/red_raid-removebg-preview.png" alt="Логотип RED RAID">
   <h1>PLAYER KILLER сообщество</h1>
-  <p>СВОБОДА <b>«АБСТРАКЦИЯ ХАОСА»</b> Романтика</p>
+  <p>СВОБОДА <b>«АБСТРАКЦИЯ ХАОСА»</b> РОМАНТИКА</p>
 </header>
 
 <main>
@@ -437,6 +438,17 @@
 
     // ДОЖДЬ: Количество капель прыгает от 20 до 220
     const maxDrops = Math.floor(weatherFactor * 200) + 20;
+    // --- ИСКАЖЕНИЯ ВИДЕО НА ОСНОВЕ ХАОСА ВРЕМЕНИ ---
+    const bgVideo = document.getElementById('bgVideo');
+    if (bgVideo) {
+      // Контраст хаотично прыгает от 80% до 180%
+      const videoContrast = Math.floor(seedRandom(timeSeed + 4) * 100) + 80;
+      // Яркость хаотично прыгает от 40% до 110% (ночью будет зловещее!)
+      const videoBrightness = Math.floor(seedRandom(timeSeed + 5) * 70) + 40;
+
+      // Применяем фильтры к видео напрямую через процессор браузера
+      bgVideo.style.filter = `contrast(${videoContrast}%) brightness(${videoBrightness}%)`;
+    }
 
     const drops = [];
     const sparks = [];
