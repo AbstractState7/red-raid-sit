@@ -124,35 +124,7 @@
       /* ЗАФИКСИРОВАНО: Медленная зловещая пульсация 6 секунд + выжигание краев */
       animation: neonPulse 6s infinite ease-in-out;
     }
-
-    /* Контраст 150% + четырехсторонний черный барьер, который полностью съедает белые точки */
-    @keyframes neonPulse {
-      0% {
-        filter: contrast(150%) brightness(90%)
-        drop-shadow(1px 1px 1px #000)
-        drop-shadow(-1px -1px 1px #000)
-        drop-shadow(1px -1px 1px #000)
-        drop-shadow(-1px 1px 1px #000)
-        drop-shadow(0 0 15px rgba(255, 51, 51, 0.4));
-      }
-      50% {
-        filter: contrast(150%) brightness(90%)
-        drop-shadow(1px 1px 1px #000)
-        drop-shadow(-1px -1px 1px #000)
-        drop-shadow(1px -1px 1px #000)
-        drop-shadow(-1px 1px 1px #000)
-        drop-shadow(0 0 40px rgba(255, 51, 51, 0.95));
-      }
-      100% {
-        filter: contrast(150%) brightness(90%)
-        drop-shadow(1px 1px 1px #000)
-        drop-shadow(-1px -1px 1px #000)
-        drop-shadow(1px -1px 1px #000)
-        drop-shadow(-1px 1px 1px #000)
-        drop-shadow(0 0 15px rgba(255, 51, 51, 0.4));
-      }
-    }
-
+    
     h1 {
       color: #ff3333;
       margin: 0;
