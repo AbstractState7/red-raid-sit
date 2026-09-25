@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>RED RAID</title>
 
-  <!-- КОД ДЛЯ КАСТОМНОЙ ИКОНКИ ВКЛАДКИ (FAVICON) -->
+  <!-- КОД ДЛЯ ИКОНКИ ВКЛАДКИ (FAVICON) -->
   <link rel="icon" type="image/png" href="./public/red_raid-removebg-preview.png">
 
   <!-- КОД ДЛЯ ПРЕВЬЮ В DISCORD -->
@@ -32,7 +32,7 @@
       box-sizing: border-box;
       position: relative;
     }
-    /* СТИЛИ ДЛЯ МОДАЛЬНОГО ОКНА ПРОСМОТРА КАРТИНКИ */
+    /* СТИЛИ ДЛЯ ОКНА ПРОСМОТРА МОМЕНТОВ */
     .modal-overlay {
       position: fixed;
       top: 0;
@@ -51,7 +51,7 @@
     .modal-overlay img {
       max-width: 90%;
       max-height: 90%;
-      border: 2px solid #ff3333; /* Наша фирменная красная рамка */
+      border: 2px solid #ff3333; /* красная рамка */
       box-shadow: 0 0 30px rgba(255, 51, 51, 0.5);
       border-radius: 8px;
       animation: zoomIn 0.25s ease-out; /* Плавное появление из центра */
@@ -132,7 +132,7 @@
       height: auto;
       margin-bottom: 15px;
 
-      /* ЗАФИКСИРОВАНО: Медленная зловещая пульсация 6 секунд + выжигание краев */
+      /* ЗАФИКСИРОВАНО: Медленная пульсация 6 секунд + выжигание краев */
       animation: neonPulse 6s infinite ease-in-out;
     }
 
@@ -162,7 +162,7 @@
       margin: 20px auto;
     }
 
-    /* Стиль для карточек-разделов */
+    /* Стиль для-разделов */
     section {
       background: rgba(22, 22, 26, 0.85); /* Чуть плотнее, чтобы дождь не мешал читать */
       backdrop-filter: blur(5px); /* Размытие видео позади карточки */
@@ -194,7 +194,7 @@
       opacity: 0.25;
     }
 
-    /* СТИЛИ ДЛЯ ГАЛЕРЕИ ТРОФЕЕВ */
+    /* СТИЛЬ ДЛЯ ГАЛЕРЕИ */
     .screenshot-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -232,7 +232,7 @@
       filter: grayscale(0%) brightness(100%);
     }
 
-    /* СТИЛИ ДЛЯ СПИСКА РОЗЫСКА (BOUNTY) */
+    /* СТИЛЬ ДЛЯ СПИСКА */
     .bounty-list {
       list-style: none;
       padding: 0;
@@ -267,7 +267,7 @@
       border: 1px solid rgba(255, 51, 51, 0.2);
     }
 
-    /* КНОПКА ДИСКОРДА В СТИЛЕ КЛАНА */
+    /* КНОПКА ДИСКОРДА */
     .discord-btn {
       display: block;
       text-align: center;
@@ -311,6 +311,7 @@
   </style>
 </head>
 <body>
+
 <video id="bgVideo" src="./public/UntitledPK.mp4" autoplay loop muted playsinline class="bg-video"></video>
 
 
@@ -357,7 +358,7 @@
       <div class="screenshot-item"><img src="./public/RedRaid1.png" alt="Трофей 7" onerror="this.src='https://placehold.co'"></div>
       <div class="screenshot-item"><img src="./public/RedRaid10.png" alt="Трофей 8" onerror="this.src='https://placehold.co'"></div>
       <div class="screenshot-item"><img src="./public/RedRaid11.png" alt="Трофей 9" onerror="this.src='https://placehold.co'"></div>
-      
+
 
     </div>
 
@@ -402,7 +403,7 @@
     // ВЕТЕР: Сила ветра от -5 (влево) до +5 (вправо). 0 — штиль.
     const windSpeed = (seedRandom(timeSeed + 2) - 0.5) * 10;
 
-    // ИСКРЫ: Решаем, сколько багровых искр взлетит в эту минуту (от 0 до 80)
+    // ИСКРЫ: сколько багровых искр взлетит в эту минуту (от 0 до 80)
     const maxSparks = Math.floor(seedRandom(timeSeed + 3) * 80);
 
     // ДОЖДЬ: Количество капель прыгает от 20 до 220
@@ -410,12 +411,12 @@
     // --- ИСКАЖЕНИЯ ВИДЕО НА ОСНОВЕ ХАОСА ВРЕМЕНИ ---
     const bgVideo = document.getElementById('bgVideo');
     if (bgVideo) {
-      // Контраст хаотично прыгает от 80% до 180%
+      // Контраст хаотично от 80% до 180%
       const videoContrast = Math.floor(seedRandom(timeSeed + 4) * 100) + 80;
-      // Яркость хаотично прыгает от 40% до 110% (ночью будет зловещее!)
+      // Яркость хаотично от 40% до 110% (ночью будет зло)
       const videoBrightness = Math.floor(seedRandom(timeSeed + 5) * 70) + 40;
 
-      // Применяем фильтры к видео напрямую через процессор браузера
+      // фильтры к видео напрямую через процессор браузера
       bgVideo.style.filter = `contrast(${videoContrast}%) brightness(${videoBrightness}%)`;
     }
 
@@ -462,13 +463,13 @@
         // Ветер сдувает искры вбок, но чуть слабее, чем дождь
         s.x += s.speedX + (windSpeed * 0.3);
 
-        // Если искра улетела за верхний край экрана — возрождаем её снизу
+        // Сверху вниз
         if (s.y < -10 || s.x < -10 || s.x > canvas.width + 10) {
           s.y = canvas.height + 10;
           s.x = Math.random() * canvas.width;
           s.alpha = Math.random() * 0.5 + 0.3;
         }
-        // --- ХАРАКТИЧНАЯ ПУЛЬСАЦИЯ ЛОГОТИПА НА ОСНОВЕ ВРЕМЕНИ ---
+        // --- ПУЛЬСАЦИЯ ЛОГОТИПА НА ОСНОВЕ ВРЕМЕНИ ---
         const mainLogo = document.querySelector('.main-logo');
         if (mainLogo) {
           // 1. Случайная скорость пульсации: от 2 секунд (быстро) до 9 секунд (медленно)
@@ -496,14 +497,14 @@
 
         ctx.beginPath();
         ctx.moveTo(d.x, d.y);
-        // Магия ветра: добавляем windSpeed к координате X конца капли, создавая идеальный наклон!
+        // создание идеального наклона!
         ctx.lineTo(d.x + windSpeed, d.y + d.length);
         ctx.stroke();
 
         d.y += d.speed;
         d.x += windSpeed; // Ветер физически двигает каплю вбок при падении
 
-        // Если капля упала вниз или улетела далеко вбок из-за урагана — возвращаем наверх
+        // Если капля упала вниз или улетела далеко вбок из-за урагана — возвращается наверх
         if (d.y > canvas.height || d.x < -100 || d.x > canvas.width + 100) {
           d.y = -d.length;
           d.x = Math.random() * canvas.width;
@@ -541,7 +542,7 @@
         const shuffleInterval = 18000; // Ровно 18 секунд между хаосом
 
         function showRandomItems() {
-          // Тасуем абсолютно все картинки в случайный хаос
+          // картинки в абсолютный хаос
           for (let i = allItems.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [allItems[i], allItems[j]] = [allItems[j], allItems[i]];
